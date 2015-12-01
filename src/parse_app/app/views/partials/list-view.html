@@ -14,7 +14,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="row in rows track by row.id" ng-if="row.show">
+    <tr ng-repeat="row in rows track by row.id" ng-show="row.show">
 
       <td ng-repeat="col in columns" ng-if="!col.hidden">
 

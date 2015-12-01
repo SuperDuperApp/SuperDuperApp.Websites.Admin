@@ -113,6 +113,8 @@ angular.module('adminApp')
         };
 
         scope.searchInputChange = function () {
+          console.log('start search');
+
           var str = scope.searchStr.toLowerCase();
           var index = scope.rows.length;
           while(index--) {
@@ -134,6 +136,8 @@ angular.module('adminApp')
               }
             }
           }
+
+          console.log('end search');
         };
 
         scope.addCloseButtonClick = function() {

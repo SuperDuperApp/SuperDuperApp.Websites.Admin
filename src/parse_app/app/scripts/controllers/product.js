@@ -390,25 +390,36 @@ angular.module('adminApp')
     };
 
     $scope.createRowsFromList = function(items) {
+      // var temp = [];
+      // for(var i = 0; i < items.length; i++) {
+      //   var obj = items[i];
+      //   temp.push($scope.createRow(obj));
+      // }
+
+      $scope.rows = [];
+      $scope.title = 'Products (' + items.length + ')';
+      $scope.createColumns();
+
+      console.log('finished');
+      $scope.createPartialRows(items, 0, 50);
+    };
+
+    $scope.createPartialRows = function(items, idx, count) {
       var temp = [];
-      for(var i = 0; i < items.length; i++) {
-        var obj = items[i];
+      for (var i = 0; i < count; i++) {
+        if (i + idx >= items.length)
+          break;
+
+        var obj = items[idx + i];
         temp.push($scope.createRow(obj));
       }
 
-
-      //$timeout(function() {
-        $scope.rows = temp;
-        $scope.title = 'Products (' + temp.length + ')';
-        $scope.createColumns();
-        //$scope.$apply();
-      //});
-
-      $timeout(function() {
-        $scope.$apply();
-      });
-      console.log('finished');
-
+      $scope.rows = $scope.rows.concat(temp);
+      if (i >= count) {
+        $timeout(function() {
+          $scope.createPartialRows(items, idx + count, count);
+        }, 10);
+      }
     };
 
     $scope.rows = [];
