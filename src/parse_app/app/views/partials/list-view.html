@@ -61,7 +61,7 @@
                 <button class="btn btn-primary pull-right" ng-click="chooseButtonClick(col, col.collection)">Choose</button>
               </div>
               <div ng-switch-when="text">
-                <label for="{{col.key}}">{{col.label}}</label>
+                <label for="{{col.key}}" ng-show="{{col.label.length}} > 0">{{col.label}}</label>
                 <input type="text" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="col.value">
               </div>
               <div ng-switch-when="textarea">
@@ -96,7 +96,6 @@
           <table class="table table-striped table-hover">
             <thead>
             <tr>
-
               <td ng-repeat="choiceCol in choiceColumns" ng-click="choiceColumnHeaderClick(choiceCol)" style="text-align: left;"><button style="padding-left: 0px;" type="button" class="btn btn-link pull-left">{{choiceCol.label}}</button></td>
               <td></td>
             </tr>
@@ -111,8 +110,6 @@
             </tbody>
           </table>
         </div>
-
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-primary" ng-click="saveButtonClick()" ng-show="!showChoice">Save</button>
@@ -120,7 +117,6 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 
 <div class="modal fade edit-modal" data-backdrop="static" data-keyboard="false">
@@ -139,7 +135,7 @@
                 <button class="btn btn-primary pull-right" ng-click="chooseButtonClick(col, col.collection)">Choose</button>
               </div>
               <div ng-switch-when="text">
-                <label for="{{col.key}}">{{col.label}}</label>
+                <label for="{{col.key}}" ng-show="{{col.label.length}} > 0">{{col.label}}</label>
                 <input type="text" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="editItem[col.key]">
               </div>
               <div ng-switch-when="textarea">
@@ -168,11 +164,6 @@
           </div>
         </form>
 
-
-
-
-
-
         <div ng-show="showChoice">
           <input type="search" class="form-control" placeholder="Search" ng-change="choiceSearchInputChange()" ng-model="choiceSearchStr">
           <table class="table table-striped table-hover">
@@ -192,12 +183,8 @@
             </tbody>
           </table>
         </div>
-
-
-
-
-
       </div>
+
       <div class="modal-footer">
         <button type="button" class="btn btn-danger" ng-click="deleteButtonClick()" ng-show="!showChoice">Delete</button>
         <button type="button" class="btn btn-primary" ng-click="updateButtonClick()" ng-show="!showChoice">Update</button>

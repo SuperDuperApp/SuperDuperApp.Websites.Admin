@@ -106,6 +106,20 @@ angular.module('adminApp')
           hidden: false
         },
         {
+          label: 'Shopping Link',
+          key: 'shoppingLinkVisible',
+          value: false,
+          inputType: 'checkbox',
+          hidden: true
+        },
+        {
+          label: '',
+          key: 'shoppingLink',
+          value: '',
+          inputType: 'text',
+          hidden: true
+        },
+        {
           label: 'Hex',
           key: 'hex',
           value: '',
@@ -200,6 +214,8 @@ angular.module('adminApp')
         productSeasonId: productSeasonId,
         productTypeId: productTypeId,
         visible: model.get('visible'),
+        shoppingLink: model.get('shoppingLink'),
+        shoppingLinkVisible: model.get('shoppingLinkVisible'),
         show: true,
         model: model
       };
