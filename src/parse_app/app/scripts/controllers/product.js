@@ -107,16 +107,16 @@ angular.module('adminApp')
         },
         {
           label: 'Shopping Link',
-          key: 'shoppingLinkVisible',
-          value: false,
-          inputType: 'checkbox',
-          hidden: true
-        },
-        {
-          label: '',
           key: 'shoppingLink',
           value: '',
           inputType: 'text',
+          hidden: true
+        },
+        {
+          label: 'Visible',
+          key: 'shoppingLinkVisible',
+          value: false,
+          inputType: 'checkbox',
           hidden: true
         },
         {
@@ -253,7 +253,12 @@ angular.module('adminApp')
 
       model.save(obj, {
         success: function() {
-          $scope.listModelObjects();
+          var new_row = $scope.createRow(model);
+          $scope.rows.unshift(new_row);
+          ProductService.items.push(model);
+          $scope.updateTitle(ProductService.items.length);
+          $scope.$apply();
+          // $scope.listModelObjects();
         },
         error: function(model, error) {
           console.log('create Product Object failed');
@@ -279,7 +284,18 @@ angular.module('adminApp')
 
       model.save(null, {
         success: function() {
-          $scope.listModelObjects();
+          var i = 0;
+          for (i = 0; i < $scope.rows.length; i++) {
+            if (model.id === $scope.rows[i].id)
+              break;
+          }
+
+          if (i < $scope.rows.length) {
+            $scope.rows[i] = $scope.createRow(model);
+            ProductService.items[i] = model;
+            $scope.$apply();
+          }
+          // $scope.listModelObjects();
         },
         error: function(model, error) {
           console.log('update Product Object failed');
@@ -291,9 +307,23 @@ angular.module('adminApp')
     $scope.deleteModelObject = function(row) {
       $scope.loading = true;
       var model = row.model;
+      var model_id = model.id;
+
       model.destroy({
         success: function() {
-          $scope.listModelObjects();
+          var i = 0;
+          for (i = 0; i < $scope.rows.length; i++) {
+            if (model_id === $scope.rows[i].id)
+              break;
+          }
+
+          if (i < $scope.rows.length) {
+            $scope.rows.splice(i, 1);
+            ProductService.items.splice(i, 1);
+            $scope.updateTitle(ProductService.items.length);
+            $scope.$apply();
+          }
+          // $scope.listModelObjects();
         },
         error: function(model, error) {
           console.log('destroying Product Object failed');
@@ -405,6 +435,10 @@ angular.module('adminApp')
       }
     };
 
+    $scope.updateTitle = function(count) {
+      $scope.title = 'Products (' + count + ')';
+    };
+
     $scope.createRowsFromList = function(items) {
       // var temp = [];
       // for(var i = 0; i < items.length; i++) {
@@ -413,7 +447,7 @@ angular.module('adminApp')
       // }
 
       $scope.rows = [];
-      $scope.title = 'Products (' + items.length + ')';
+      $scope.updateTitle(items.length);
       $scope.createColumns();
 
       console.log('finished');

@@ -9,7 +9,9 @@
     <tr>
       <td ng-repeat="col in columns" ng-if="!col.hidden" ng-click="columnHeaderClick(col)" style="text-align: left;"><button style="padding-left: 0px;" type="button" class="btn btn-link pull-left">{{col.label}}</button></td>
       <td ng-repeat="btn in itemButtons"></td>
+      <!--
       <td></td>
+      -->
       <td><button type="button" class="btn btn-success pull-right" ng-click="addButtonClick()">Add</button></td>
     </tr>
     </thead>
@@ -34,9 +36,11 @@
       <td ng-repeat="btn in itemButtons">
         <button type="button" class="btn {{btn.cls}} pull-right"  ng-click="btn.action(row)">{{btn.label}}</button>
       </td>
+      <!--
       <td>
         <button type="button" class="btn btn-default pull-right" ng-click="viewButtonClick(row)">View</button>
       </td>
+      -->
       <td>
         <button type="button" class="btn btn-warning pull-right" ng-click="editButtonClick(row)">Edit</button>
       </td>
