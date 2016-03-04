@@ -8,7 +8,7 @@
  * Controller of the adminApp
  */
 angular.module('adminApp')
-  .controller('ProductCtrl', function ($scope, $rootScope, $location, $timeout, ProductService, BrandService, ProductSeasonService, ProductTypeService) {
+  .controller('ProductCtrl', function ($scope, $rootScope, $location, $timeout, ProductService, BrandService, ProductTypeService) {
     $rootScope.activeView = 'product';
     $scope.title = 'Products';
     $scope.rows = [];
@@ -49,6 +49,22 @@ angular.module('adminApp')
           hidden: false
         },
         {
+          label: 'Product Visible',
+          key: 'visible',
+          value: true,
+          defaultValue: true,
+          inputType: 'checkbox',
+          hidden: true
+        },
+        {
+          label: 'In Stock',
+          key: 'inStock',
+          value: true,
+          defaultValue: true,
+          inputType: 'checkbox',
+          hidden: true
+        },
+        {
           label: 'Color',
           key: 'color',
           value: '',
@@ -65,10 +81,57 @@ angular.module('adminApp')
         {
           label: 'Brand',
           key: 'brand',
-          value: '',
+          value: -1,
+          defaultValue: -1,
           inputType: 'rel',
           collection: $scope.brands,
           hidden: false
+        },
+        {
+          label: 'Sub-brand',
+          key: 'subBrand',
+          value: -1,
+          defaultValue: -1,
+          inputType: 'rel',
+          collection: $scope.subbrands,
+          hidden: true
+        },
+        {
+          label: 'Visible',
+          key: 'displayVisible',
+          value: true,
+          hiddenPopup: true,
+          inputType: 'checkbox',
+          hidden: false
+        },
+        {
+          label: 'In Stock',
+          key: 'displayInStock',
+          value: true,
+          inputType: 'checkbox',
+          hiddenPopup: true,
+          hidden: false
+        },
+        {
+          label: 'Collection',
+          key: 'collection',
+          value: '',
+          inputType: 'text',
+          hidden: true
+        },
+        {
+          label: 'Release Date',
+          key: 'releaseDate',
+          value: '',
+          inputType: 'text',
+          hidden: true
+        },
+        {
+          label: 'Hex code',
+          key: 'hex',
+          value: '',
+          inputType: 'text',
+          hidden: true
         },
         {
           label: 'Price',
@@ -76,20 +139,6 @@ angular.module('adminApp')
           value: 0,
           inputType: 'number',
           hidden: true
-        },
-        {
-          label: 'In Stock',
-          key: 'inStock',
-          value: false,
-          inputType: 'checkbox',
-          hidden: false
-        },
-        {
-          label: 'Visible',
-          key: 'visible',
-          value: true,
-          inputType: 'checkbox',
-          hidden: false
         },
         {
           label: 'M',
@@ -106,47 +155,178 @@ angular.module('adminApp')
           hidden: false
         },
         {
-          label: 'Shopping Link',
-          key: 'shoppingLink',
+          label: 'Description',
+          key: 'description',
           value: '',
-          inputType: 'text',
+          inputType: 'textarea',
+          hidden: true
+        },
+
+        {
+          label: 'Links to External Swatches',
+          key: '',
+          value: '',
+          inputType: 'label',
           hidden: true
         },
         {
-          label: 'Visible',
+          label: 'External link 1 Visible',
+          key: 'externalLinkVisible',
+          value: false,
+          inputType: 'checkbox',
+          marginLeft: 20,
+          hidden: true
+        },
+        {
+          label: 'External link 1',
+          key: 'externalLink',
+          value: '',
+          inputType: 'text',
+          marginLeft: 20,
+          hidden: true
+        },
+        {
+          label: 'Link Text',
+          key: 'externalLinkText',
+          value: '',
+          inputType: 'text',
+          marginLeft: 20,
+          hidden: true
+        },
+        {
+          label: 'External link 2 Visible',
+          key: 'externalLinkVisible2',
+          value: false,
+          inputType: 'checkbox',
+          marginLeft: 20,
+          hidden: true
+        },
+        {
+          label: 'External link 2',
+          key: 'externalLink2',
+          value: '',
+          inputType: 'text',
+          marginLeft: 20,
+          hidden: true
+        },
+        {
+          label: 'Link Text',
+          key: 'externalLinkText2',
+          value: '',
+          inputType: 'text',
+          marginLeft: 20,
+          hidden: true
+        },
+        {
+          label: 'External link 3 Visible',
+          key: 'externalLinkVisible3',
+          value: false,
+          inputType: 'checkbox',
+          marginLeft: 20,
+          hidden: true
+        },
+        {
+          label: 'External link 3',
+          key: 'externalLink3',
+          value: '',
+          inputType: 'text',
+          marginLeft: 20,
+          hidden: true
+        },
+        {
+          label: 'Link Text',
+          key: 'externalLinkText3',
+          value: '',
+          inputType: 'text',
+          marginLeft: 20,
+          hidden: true
+        },
+
+        {
+          label: '"Buy" Buttons',
+          key: '',
+          value: '',
+          inputType: 'label',
+          hidden: true
+        },
+        {
+          label: 'Shopping link 1 Visible',
           key: 'shoppingLinkVisible',
           value: false,
           inputType: 'checkbox',
+          marginLeft: 20,
           hidden: true
         },
         {
-          label: 'Hex',
-          key: 'hex',
+          label: 'Shopping link 1',
+          key: 'shoppingLink',
           value: '',
           inputType: 'text',
+          marginLeft: 20,
           hidden: true
         },
         {
-          label: 'Season',
-          key: 'productSeason',
+          label: 'button text',
+          key: 'shoppingLinkText',
           value: '',
-          inputType: 'rel',
-          collection: $scope.productSeasons,
+          inputType: 'text',
+          marginLeft: 20,
           hidden: true
         },
         {
-          label: 'Type',
-          key: 'productType',
-          value: $scope.productTypes[0].id || '',
-          inputType: 'rel',
-          collection: $scope.productTypes,
+          label: 'Shopping link 2 Visible',
+          key: 'shoppingLinkVisible2',
+          value: false,
+          inputType: 'checkbox',
+          marginLeft: 20,
           hidden: true
         },
         {
-          label: 'Copy',
-          key: 'displayCopy',
+          label: 'Shopping link 2',
+          key: 'shoppingLink2',
           value: '',
-          inputType: 'textarea',
+          inputType: 'text',
+          marginLeft: 20,
+          hidden: true
+        },
+        {
+          label: 'button text',
+          key: 'shoppingLinkText2',
+          value: '',
+          inputType: 'text',
+          marginLeft: 20,
+          hidden: true
+        },
+        {
+          label: 'Shopping link 3 Visible',
+          key: 'shoppingLinkVisible3',
+          value: false,
+          inputType: 'checkbox',
+          marginLeft: 20,
+          hidden: true
+        },
+        {
+          label: 'Shopping link 3',
+          key: 'shoppingLink3',
+          value: '',
+          inputType: 'text',
+          marginLeft: 20,
+          hidden: true
+        },
+        {
+          label: 'button text',
+          key: 'shoppingLinkText3',
+          value: '',
+          inputType: 'text',
+          marginLeft: 20,
+          hidden: true
+        },
+
+        {
+          label: 'Keywords',
+          key: 'keywords',
+          value: '',
+          inputType: 'text',
           hidden: true
         },
         {
@@ -155,67 +335,113 @@ angular.module('adminApp')
           value: '',
           inputType: 'textarea',
           hidden: true
-        }
+        },
+        {
+          label: 'Type',
+          key: 'productType',
+          value: $scope.productTypes[0].id || '',
+          defaultValue: $scope.productTypes[0].id || '',
+          inputType: 'rel',
+          collection: $scope.productTypes,
+          hidden: true
+        },
       ];
       $scope.loading = false;
     };
 
     $scope.createRow = function(model) {
-      var brandLabel = '';
-      var productSeasonLabel = '';
-      var productTypeLabel = '';
-      var brandId = null;
-      var productSeasonId = null;
-      var productTypeId = null;
-      var brandModel = null;
-      var productSeasonModel = null;
-      var productTypeModel = null;
+      var brandLabel = '', brandId = null, brandModel = null;
+      var subBrandLabel = '', subBrandId = null, subBrandModel = null;
+      var productTypeLabel = '', productTypeId = null, productTypeModel = null;
 
       if (model.get('brand')) {
         brandModel = $scope.findModelById(model.get('brand').id, $scope.brands);
+        if (brandModel) {
+          brandLabel = brandModel.get('name');
+          brandId    = brandModel.id;
+        }
+        else {
+          brandLabel = 'None';
+          brandId    = -1;
+        }
+      }
+      else {
+        brandLabel = 'None';
+        brandId    = -1;
       }
 
-      if (model.get('productSeason')) {
-        productSeasonModel = $scope.findModelById(model.get('productSeason').id, $scope.productSeasons);
+      if (model.get('subBrand')) {
+        subBrandModel = $scope.findModelById(model.get('subBrand').id, $scope.subbrands);
+        if (subBrandModel) {
+          subBrandLabel = subBrandModel.get('name');
+          subBrandId    = subBrandModel.id;
+        }
+        else {
+          subBrandLabel = 'None';
+          subBrandId    = -1;
+        }
+      }
+      else {
+        subBrandLabel = 'None';
+        subBrandId    = -1;
       }
 
       if (model.get('productType')) {
         productTypeModel = $scope.findModelById(model.get('productType').id, $scope.productTypes);
-      }
-
-      if (brandModel) {
-        brandLabel = brandModel.get('name');
-        brandId = brandModel.id;
-      }
-      if (productSeasonModel) {
-        productSeasonLabel = productSeasonModel.get('name');
-        productSeasonId = productSeasonModel.id;
-      }
-      if (productTypeModel) {
-        productTypeLabel = productTypeModel.get('name');
-        productTypeId = productTypeModel.id;
+        if (productTypeModel) {
+          productTypeLabel = productTypeModel.get('name');
+          productTypeId    = productTypeModel.id;
+        }
       }
 
       return {
         id: model.id,
-        photoCount: model.get('photoCount'),
-        matchCount: model.get('matchCount'),
-        hex: model.get('hex'),
-        notes: model.get('notes'),
+        visible: model.get('visible'),
+        inStock: model.get('inStock'),
         color: model.get('color'),
         colorNumber: model.get('colorNumber'),
-        displayCopy: model.get('displayCopy'),
-        inStock: model.get('inStock'),
-        price: model.get('price'),
-        brand: brandLabel,
-        productSeason: productSeasonLabel,
-        productType: productTypeLabel,
+        photoCount: model.get('photoCount'),
+        matchCount: model.get('matchCount'),
+        
         brandId: brandId,
-        productSeasonId: productSeasonId,
-        productTypeId: productTypeId,
-        visible: model.get('visible'),
-        shoppingLink: model.get('shoppingLink'),
+        brand: brandLabel,
+        subBrandId: subBrandId,
+        subBrand: subBrandLabel,
+
+        displayVisible: model.get('visible'),
+        displayInStock: model.get('inStock'),
+
+        collection: model.get('collection'),
+        releaseDate: model.get('releaseDate'),
+        hex: model.get('hex'),
+        price: model.get('price'),
+        description: model.get('description'),
+
+        externalLinkVisible: model.get('externalLinkVisible'),
+        externalLink: model.get('externalLink'),
+        externalLinkText: model.get('externalLinkText'),
+        externalLinkVisible2: model.get('externalLinkVisible2'),
+        externalLink2: model.get('externalLink2'),
+        externalLinkText2: model.get('externalLinkText2'),
+        externalLinkVisible3: model.get('externalLinkVisible3'),
+        externalLink3: model.get('externalLink3'),
+        externalLinkText3: model.get('externalLinkText3'),
+
         shoppingLinkVisible: model.get('shoppingLinkVisible'),
+        shoppingLink: model.get('shoppingLink'),
+        shoppingLinkText: model.get('shoppingLinkText'),
+        shoppingLinkVisible2: model.get('shoppingLinkVisible2'),
+        shoppingLink2: model.get('shoppingLink2'),
+        shoppingLinkText2: model.get('shoppingLinkText2'),
+        shoppingLinkVisible3: model.get('shoppingLinkVisible3'),
+        shoppingLink3: model.get('shoppingLink3'),
+        shoppingLinkText3: model.get('shoppingLinkText3'),
+
+        keywords: model.get('keywords'),
+        notes: model.get('notes'),
+        productType: productTypeLabel,
+        productTypeId: productTypeId,
+
         show: true,
         model: model
       };
@@ -243,7 +469,7 @@ angular.module('adminApp')
         var col = $scope.columns[i];
         if (col.inputType === 'rel') {
           obj[col.key] = $scope.findModelById(col.value, col.collection);
-        } else if (col.inputType === 'none' || col.inputType === 'swatch'){
+        } else if (col.inputType === 'none' || col.inputType === 'swatch' || col.inputType === 'label'){
           // ignore
         } else {
           obj[col.key] = col.value;
@@ -275,7 +501,7 @@ angular.module('adminApp')
         var col = $scope.columns[i];
         if (col.inputType === 'rel') {
           model.set(col.key, $scope.findModelById(row[col.key], col.collection));
-        } else if (col.inputType === 'none' || col.inputType === 'swatch'){
+        } else if (col.inputType === 'none' || col.inputType === 'swatch' || col.inputType === 'label'){
             // ignore
         } else {
           model.set(col.key, row[col.key]);
@@ -363,37 +589,6 @@ angular.module('adminApp')
 
     };
 
-
-    $scope.createProductSeasonListItem = function(oName, model) {
-      return {
-        id: model.id,
-        name: oName,
-        model: model
-      };
-    };
-
-    $scope.listProductSeasonModelObjects = function() {
-      if (ProductSeasonService.items.length === 0) {
-        ProductSeasonService.list(function() {
-          $scope.createProductSeasonObjects(ProductSeasonService.items);
-        });
-      } else {
-        $scope.createProductSeasonObjects(ProductSeasonService.items);
-      }
-    };
-
-    $scope.createProductSeasonObjects = function(items) {
-      var temp = [];
-      for(var i = 0; i < items.length; i++) {
-        var obj = items[i];
-        temp.push($scope.createProductSeasonListItem(obj.get('name'), obj));
-      }
-
-      $scope.productSeasons = temp;
-      $scope.listProductTypeModelObjects();
-
-    };
-
     $scope.createBrandListItem = function(oName, model) {
       return {
         id: model.id,
@@ -413,16 +608,38 @@ angular.module('adminApp')
       }
     };
 
+    $scope.brands    = [];
+    $scope.subbrands = [];
+
     $scope.createBrandObjects = function(items) {
-      var temp = [];
+      var brands = [], subbrands = [];
+
+      brands.push(
+        {
+          id:     -1,
+          name:   'None',
+          model:  null
+        }
+      );
+      subbrands.push(
+        {
+          id:     -1,
+          name:   'None',
+          model:  null
+        }
+      );
+
       for(var i = 0; i < items.length; i++) {
         var obj = items[i];
-        temp.push($scope.createBrandListItem(obj.get('name'), obj));
+        brands.push($scope.createBrandListItem(obj.get('name'), obj));
+        if (obj.get('parent'))
+          subbrands.push($scope.createBrandListItem(obj.get('name'), obj));
       }
 
-      $scope.brands = temp;
-      $scope.listProductSeasonModelObjects();
+      $scope.brands    = brands;
+      $scope.subbrands = subbrands;
 
+      $scope.listProductTypeModelObjects();
     };
 
     $scope.listModelObjects = function() {

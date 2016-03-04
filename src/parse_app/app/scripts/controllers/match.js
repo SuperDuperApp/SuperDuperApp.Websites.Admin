@@ -11,6 +11,7 @@ angular.module('adminApp')
   .controller('MatchCtrl', function ($scope, $rootScope, $route, $timeout, $location, ProductService, BrandService, ProductSeasonService, ProductTypeService) {
     $rootScope.activeView = 'product';
     $scope.title = 'Product - Matches';
+    // $scope.titleLink = '#/product';
 
     $scope.rows = [];
     $scope.columns = [];
@@ -432,12 +433,9 @@ angular.module('adminApp')
 
     };
 
-
-
     $scope.getProductModelObject = function() {
       var Product = Parse.Object.extend('Product');
       var query = new Parse.Query(Product);
-
 
       query.get($scope.productId, {
         success: function(result) {
@@ -448,7 +446,6 @@ angular.module('adminApp')
         },
         error: function(error) {
           alert('Error: ' + error.code + ' ' + error.message);
-
         }
       });
     };

@@ -1,5 +1,9 @@
 <div class="page-header">
-  <h1>{{title}} <small><i class="fa fa-cloud-download " ng-show="loading"></i></small></h1>
+  <h1>
+    <div ng-if="!titleLink || titleLink.length === 0" style="display: inline-block;">{{title}}</div>
+    <a ng-if="titleLink.length > 0" style="display: inline-block;" ng-href="#/product">{{title}}</a>
+    <small><i class="fa fa-cloud-download " ng-show="loading"></i></small>
+  </h1>
 </div>
 
 <input type="search" class="form-control" placeholder="Search" ng-change="searchInputChange()" ng-model="searchStr">
@@ -64,9 +68,16 @@
                 <label for="{{col.key}}">{{col.label}} : <span style="color: #aabbcc;">{{col.value}}</span></label>
                 <button class="btn btn-primary pull-right" ng-click="chooseButtonClick(col, col.collection)">Choose</button>
               </div>
-              <div ng-switch-when="text">
+              <div ng-switch-when="label" style="margin-left: {{col.marginLeft}}px;">
+                <label ng-show="{{col.label.length}} > 0">{{col.label}}</label>
+              </div>
+              <div ng-switch-when="text" style="margin-left: {{col.marginLeft}}px;">
                 <label for="{{col.key}}" ng-show="{{col.label.length}} > 0">{{col.label}}</label>
                 <input type="text" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="col.value">
+              </div>
+              <div ng-switch-when="date" style="margin-left: {{col.marginLeft}}px;">
+                <label for="{{col.key}}" ng-show="{{col.label.length}} > 0">{{col.label}}</label>
+                <input type="date" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="col.value">
               </div>
               <div ng-switch-when="textarea">
                 <label for="{{col.key}}">{{col.label}}</label>
@@ -80,7 +91,7 @@
                 <label for="{{col.key}}">{{col.label}}</label>
                 <input type="number" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="col.value">
               </div>
-              <div ng-switch-when="checkbox">
+              <div ng-switch-when="checkbox" ng-if="!col.hiddenPopup" style="margin-left: {{col.marginLeft}}px;">
                 <label class="checkbox-inline">
                   <input type="checkbox" name="{{col.key}}" ng-model="col.value">
                   {{col.label}}
@@ -138,9 +149,16 @@
                 <label for="{{col.key}}">{{col.label}} : <span style="color: #aabbcc;">{{editItem[col.key]}}</span></label>
                 <button class="btn btn-primary pull-right" ng-click="chooseButtonClick(col, col.collection)">Choose</button>
               </div>
-              <div ng-switch-when="text">
+              <div ng-switch-when="label" style="margin-left: {{col.marginLeft}}px;">
+                <label ng-show="{{col.label.length}} > 0">{{col.label}}</label>
+              </div>
+              <div ng-switch-when="text" style="margin-left: {{col.marginLeft}}px;">
                 <label for="{{col.key}}" ng-show="{{col.label.length}} > 0">{{col.label}}</label>
                 <input type="text" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="editItem[col.key]">
+              </div>
+              <div ng-switch-when="date" style="margin-left: {{col.marginLeft}}px;">
+                <label for="{{col.key}}" ng-show="{{col.label.length}} > 0">{{col.label}}</label>
+                <input type="date" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="col.value">
               </div>
               <div ng-switch-when="textarea">
                 <label for="{{col.key}}">{{col.label}}</label>
@@ -154,7 +172,7 @@
                 <label for="{{col.key}}">{{col.label}}</label>
                 <input type="number" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="editItem[col.key]">
               </div>
-              <div ng-switch-when="checkbox">
+              <div ng-switch-when="checkbox" ng-if="!col.hiddenPopup" style="margin-left: {{col.marginLeft}}px;">
                 <label class="checkbox-inline">
                   <input type="checkbox" name="{{col.key}}" ng-model="editItem[col.key]">
                   {{col.label}}
@@ -213,7 +231,7 @@
                 <p>{{col.label}} : <span style="color: #144EEB;">{{viewItem[col.key]}}</span></p>
 
               </div>
-              <div ng-switch-when="text">
+              <div ng-switch-when="text" style="margin-left: {{col.marginLeft}}px;">
                 <p>{{col.label}} : <span style="color: #144EEB;">{{viewItem[col.key]}}</span></p>
 
               </div>
@@ -230,7 +248,7 @@
               <div ng-switch-when="number">
                 <p>{{col.label}} : <span style="color: #144EEB;">{{viewItem[col.key]}}</span></p>
               </div>
-              <div ng-switch-when="checkbox">
+              <div ng-switch-when="checkbox" style="margin-left: {{col.marginLeft}}px;">
                 <p>{{col.label}} : <span style="color: #144EEB;">{{viewItem[col.key]}}</span></p>
               </div>
               <div ng-switch-when="rel">

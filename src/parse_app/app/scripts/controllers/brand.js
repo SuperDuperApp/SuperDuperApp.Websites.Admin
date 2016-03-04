@@ -19,42 +19,36 @@ angular.module('adminApp')
     };
 
     $scope.itemButtons = [
-      // {
-      //   label: 'Photos',
-      //   action: $scope.showPhotos,
-      //   cls: 'btn-primary'
-      // }
+      {
+        label:    'Photos',
+        action:   $scope.showPhotos,
+        cls:      'btn-primary'
+      }
     ];
 
     $scope.createRow = function(model) {
       var parentId = '', parentName = '', parentModel = null;
-      var photo1 = '', photo2 = '';
 
       if (model.get('parent')) {
         parentModel = $scope.findModelById(model.get('parent').id, $scope.brands);
         parentId    = parentModel.id;
         parentName  = parentModel.get('name');
       }
-
-      if (model.get('photo1'))
-        photo1 = model.get('photo1').url();
-
-      if (model.get('photo2'))
-        photo2 = model.get('photo2').url();
+      else {
+        parentId    = -1;
+        parentName  = 'None';
+      }
 
       return {
         id:           model.id,
         model:        model,
         name:         model.get('name'),
         visible:      model.get('visible'),
+        photoCount:   model.get('photoCount'),
         parent:       parentName,
         parentId:     parentId,
-        photo1:       photo1,
-        photo1_name:  model.get('photo1_name'),
-        photo1_desc:  model.get('photo1_desc'),
-        photo2:       photo2,
-        photo2_name:  model.get('photo2_name'),
-        photo2_desc:  model.get('photo2_desc'),
+        shortDesc:    model.get('shortDesc'),
+        longerDesc:   model.get('longerDesc'),
         keywords:     model.get('keywords'),
         show:         true
       };
@@ -73,7 +67,7 @@ angular.module('adminApp')
         {
           label: 'Parent',
           key: 'parent',
-          value: '',
+          value: -1,
           inputType: 'rel',
           collection: $scope.brands,
           hidden: true
@@ -86,43 +80,22 @@ angular.module('adminApp')
           hidden: false
         },
         {
-          label: 'Photo 1',
-          key: 'photo1',
+          label: 'P',
+          key: 'photoCount',
           value: '',
-          inputType: 'image',
-          hidden: true
+          inputType: 'none',
+          hidden: false
         },
         {
-          label: 'Photo 1 Name',
-          key: 'photo1_name',
-          value: '',
-          inputType: 'text',
-          hidden: true
-        },
-        {
-          label: 'Short Description',
-          key: 'photo1_desc',
+          label: 'Short Description (displays on Brands page)',
+          key: 'shortDesc',
           value: '',
           inputType: 'textarea',
           hidden: true
         },
         {
-          label: 'Photo 2',
-          key: 'photo2',
-          value: '',
-          inputType: 'image',
-          hidden: true
-        },
-        {
-          label: 'Photo 2 Name',
-          key: 'photo2_name',
-          value: '',
-          inputType: 'text',
-          hidden: true
-        },
-        {
-          label: 'Longer Description',
-          key: 'photo2_desc',
+          label: 'Longer Description (displays on individual brand page)',
+          key: 'longerDesc',
           value: '',
           inputType: 'textarea',
           hidden: true
@@ -166,24 +139,6 @@ angular.module('adminApp')
         if (col.inputType === 'rel') {
           model[col.key] = $scope.findModelById(col.value, col.collection);
         }
-        else if (col.inputType === 'image') {
-          if (typeof col.value !== 'string') {
-            var name = col.key + '.jpg';
-            for (j = 0; j < $scope.columns.length; j++) {
-              if ($scope.columns[j].key === col.key + '_name') {
-                if ($scope.columns[j].value !== '')
-                  name = $scope.columns[j].value + '.jpg';
-                break;
-              }
-            }
-            files.push(
-              {
-                key:    col.key,
-                file:   new Parse.File(name, col.value)
-              }
-            );
-          }
-        }
         else if (col.inputType === 'none' || col.inputType === 'swatch') {
           // ignore
         } else {
@@ -191,24 +146,7 @@ angular.module('adminApp')
         }
       }
 
-      if (files[0].file) {
-        // photo1 save
-        files[0].file.save().then(function() {
-          model[files[0].key] = files[0].file;
-          // photo2 save
-          if (files[1] && files[1].file) {
-            files[1].file.save().then(function() {
-              model[files[1].key] = files[1].file;
-              $scope.saveModelObject(model, false);
-            });
-          }
-          else
-            $scope.saveModelObject(model, false);
-        });
-      }
-      else {
-        $scope.saveModelObject(model, false);
-      }
+      $scope.saveModelObject(model, false);
     };
 
     $scope.saveModelObject = function(model, isUpdating) {
@@ -238,24 +176,6 @@ angular.module('adminApp')
         if (col.inputType === 'rel') {
           model.set(col.key, $scope.findModelById(row[col.key], col.collection));
         }
-        else if (col.inputType === 'image') {
-          if (typeof row[col.key] !== 'string') {
-            var name = col.key + '.jpg';
-            for (j = 0; j < $scope.columns.length; j++) {
-              if ($scope.columns[j].key === col.key + '_name') {
-                if (row[$scope.columns[j].key] !== '')
-                  name = row[$scope.columns[j].key] + '.jpg';
-                break;
-              }
-            }
-            files.push(
-              {
-                key:    col.key,
-                file:   new Parse.File(name, row[col.key])
-              }
-            );
-          }
-        }
         else if (col.inputType === 'none' || col.inputType === 'swatch'){
             // ignore
         }
@@ -264,24 +184,7 @@ angular.module('adminApp')
         }
       }
 
-      if (files.length > 0 && files[0].file) {
-        // photo1 save
-        files[0].file.save().then(function() {
-          model.set(files[0].key, files[0].file);
-          // photo2 save
-          if (files[1] && files[1].file) {
-            files[1].file.save().then(function() {
-              model.set(files[1].key, files[1].file);
-              $scope.saveModelObject(model, true);
-            });
-          }
-          else
-            $scope.saveModelObject(model, true);
-        });
-      }
-      else {
-        $scope.saveModelObject(model, true);
-      }
+      $scope.saveModelObject(model, true);
     };
 
     $scope.deleteModelObject = function(row) {
@@ -304,6 +207,14 @@ angular.module('adminApp')
 
     $scope.createRowsFromList = function(items) {
       $scope.brands = [];
+      $scope.brands.push(
+        {
+          id:     -1,
+          name:   'None',
+          model:  null
+        }
+      );
+
       for(var i = 0; i < items.length; i++) {
         var obj = items[i];
         if (!obj.get('parent')) {
@@ -331,19 +242,8 @@ angular.module('adminApp')
         $scope.loading = false;
         $scope.$apply();
       });
-
-    /*
-    } else {
-          $scope.rows = temp;
-          $scope.createColumns();
-          $scope.loading = false;
-      }
-      //$scope.$apply();
-      if (!$rootScope.$$phase) { $rootScope.$apply(); }
-  */
     };
 
     $scope.listModelObjects();
-
 
   });

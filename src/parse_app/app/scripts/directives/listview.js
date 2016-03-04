@@ -13,6 +13,7 @@ angular.module('adminApp')
       restrict: 'E',
       scope: {
         title: '=',
+        titleLink: '=',
         columns: '=',
         rows: '=',
         createModelObject: '=',
@@ -203,15 +204,16 @@ angular.module('adminApp')
             });
           });
 
-
           $(element).find('.read-modal').modal('show');
         };
 
         scope.addButtonClick = function() {
+          var i = 0;
+
           scope.editMode = false;
           if (scope.showChoiceFirst) {
 
-            for (var i = 0; i < scope.columns.length; i++) {
+            for (i = 0; i < scope.columns.length; i++) {
               var col = scope.columns[i];
               if (col.inputType === 'choice' ) {
                 console.log(col);
@@ -221,15 +223,26 @@ angular.module('adminApp')
             }
           }
 
-          $(element).find('.add-modal input').val('');
+          for (i = 0; i < scope.columns.length; i++) {
+            var col = scope.columns[i];
+            if (col.inputType === 'text' || col.inputType === 'textarea' || col.inputType === 'rel')
+              col.value = '';
+            else if (col.inputType === 'number')
+              col.value = 0;
+            else if (col.inputType === 'checkbox')
+              col.value = false;
+            if (col.defaultValue)
+              col.value = col.defaultValue;
+          }
+
           $(element).find('.add-modal').modal();
+          $(element).find('.add-modal').find('.modal-body form').scrollTop(0);
         };
 
         scope.editButtonClick = function(row) {
           scope.editItem = {};
           scope.editMode = true;
           scope.showChoice = false;
-
 
           for (var key in row) {
             scope.editItem[key] = row[key];
@@ -242,14 +255,12 @@ angular.module('adminApp')
               scope.editItem[col.key] = row[col.key + 'Id'];
             } else if (col.inputType === 'choice' ) {
               scope.editItem[col.key] = row[col.key];
-            } else {
+            } else if (col.key !== '') {
               scope.editItem[col.key] = row[col.key];
             }
-
           }
 
           $(element).find('.edit-modal').modal('show');
-
         };
       }
     };
