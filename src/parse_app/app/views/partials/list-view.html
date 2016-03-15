@@ -68,26 +68,26 @@
                 <label for="{{col.key}}">{{col.label}} : <span style="color: #aabbcc;">{{col.value}}</span></label>
                 <button class="btn btn-primary pull-right" ng-click="chooseButtonClick(col, col.collection)">Choose</button>
               </div>
-              <div ng-switch-when="label" style="margin-left: {{col.marginLeft}}px;">
+              <div ng-switch-when="label" ng-if="!col.hiddenPopup" style="margin-left: {{col.marginLeft}}px;">
                 <label ng-show="{{col.label.length}} > 0">{{col.label}}</label>
               </div>
-              <div ng-switch-when="text" style="margin-left: {{col.marginLeft}}px;">
+              <div ng-switch-when="text" ng-if="!col.hiddenPopup" style="margin-left: {{col.marginLeft}}px;">
                 <label for="{{col.key}}" ng-show="{{col.label.length}} > 0">{{col.label}}</label>
                 <input type="text" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="col.value">
               </div>
-              <div ng-switch-when="date" style="margin-left: {{col.marginLeft}}px;">
+              <div ng-switch-when="date" ng-if="!col.hiddenPopup" style="margin-left: {{col.marginLeft}}px;">
                 <label for="{{col.key}}" ng-show="{{col.label.length}} > 0">{{col.label}}</label>
                 <input type="date" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="col.value">
               </div>
-              <div ng-switch-when="textarea">
+              <div ng-switch-when="textarea" ng-if="!col.hiddenPopup">
                 <label for="{{col.key}}">{{col.label}}</label>
                 <textarea class="form-control" name="{{col.key}}" ng-model="col.value"></textarea>
               </div>
-              <div ng-switch-when="image">
+              <div ng-switch-when="image" ng-if="!col.hiddenPopup">
                 <label for="{{col.key}}">{{col.label}}</label>
                 <input type="file" class="form-control" name="{{col.key}}" file-read="col.value">
               </div>
-              <div ng-switch-when="number">
+              <div ng-switch-when="number" ng-if="!col.hiddenPopup">
                 <label for="{{col.key}}">{{col.label}}</label>
                 <input type="number" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="col.value">
               </div>
@@ -98,7 +98,7 @@
                 </label>
 
               </div>
-              <div ng-switch-when="rel">
+              <div ng-switch-when="rel" ng-if="!col.hiddenPopup">
                 <label for="{{col.key}}">{{col.label}}</label>
                 <select class="form-control" name="{{col.key}}" ng-model="col.value" ng-options="item.id as item.name for item in col.collection"></select>
               </div>
@@ -145,30 +145,30 @@
         <form role="form" ng-show="!showChoice">
           <div class="form-group" ng-repeat="col in columns">
             <div ng-switch="col.inputType">
-              <div ng-switch-when="choice">
+              <div ng-switch-when="choice" ng-if="!col.hiddenPopup">
                 <label for="{{col.key}}">{{col.label}} : <span style="color: #aabbcc;">{{editItem[col.key]}}</span></label>
                 <button class="btn btn-primary pull-right" ng-click="chooseButtonClick(col, col.collection)">Choose</button>
               </div>
-              <div ng-switch-when="label" style="margin-left: {{col.marginLeft}}px;">
+              <div ng-switch-when="label" ng-if="!col.hiddenPopup" style="margin-left: {{col.marginLeft}}px;">
                 <label ng-show="{{col.label.length}} > 0">{{col.label}}</label>
               </div>
-              <div ng-switch-when="text" style="margin-left: {{col.marginLeft}}px;">
+              <div ng-switch-when="text" ng-if="!col.hiddenPopup" style="margin-left: {{col.marginLeft}}px;">
                 <label for="{{col.key}}" ng-show="{{col.label.length}} > 0">{{col.label}}</label>
                 <input type="text" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="editItem[col.key]">
               </div>
-              <div ng-switch-when="date" style="margin-left: {{col.marginLeft}}px;">
+              <div ng-switch-when="date" ng-if="!col.hiddenPopup" style="margin-left: {{col.marginLeft}}px;">
                 <label for="{{col.key}}" ng-show="{{col.label.length}} > 0">{{col.label}}</label>
                 <input type="date" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="col.value">
               </div>
-              <div ng-switch-when="textarea">
+              <div ng-switch-when="textarea" ng-if="!col.hiddenPopup">
                 <label for="{{col.key}}">{{col.label}}</label>
                 <textarea class="form-control" name="{{col.key}}" ng-model="editItem[col.key]"></textarea>
               </div>
-              <div ng-switch-when="image">
+              <div ng-switch-when="image" ng-if="!col.hiddenPopup">
                 <label for="{{col.key}}">{{col.label}}</label>
                 <input type="file" class="form-control" name="{{col.key}}" file-read="editItem[col.key]">
               </div>
-              <div ng-switch-when="number">
+              <div ng-switch-when="number" ng-if="!col.hiddenPopup">
                 <label for="{{col.key}}">{{col.label}}</label>
                 <input type="number" class="form-control" name="{{col.key}}" placeholder="Enter {{col.name}}" ng-model="editItem[col.key]">
               </div>
@@ -178,7 +178,7 @@
                   {{col.label}}
                 </label>
               </div>
-              <div ng-switch-when="rel">
+              <div ng-switch-when="rel" ng-if="!col.hiddenPopup">
                 <label for="{{col.key}}">{{col.label}}</label>
                 <select class="form-control" name="{{col.key}}" ng-model="editItem[col.key]" ng-options="item.id as item.name for item in col.collection"></select>
               </div>

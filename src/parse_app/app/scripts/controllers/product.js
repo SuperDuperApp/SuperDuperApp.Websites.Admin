@@ -85,7 +85,17 @@ angular.module('adminApp')
           defaultValue: -1,
           inputType: 'rel',
           collection: $scope.brands,
+          hiddenPopup: true,
           hidden: false
+        },
+        {
+          label: 'Brand',
+          key: 'webBrand',
+          value: -1,
+          defaultValue: -1,
+          inputType: 'rel',
+          collection: $scope.brands,
+          hidden: true
         },
         {
           label: 'Sub-brand',
@@ -94,6 +104,15 @@ angular.module('adminApp')
           defaultValue: -1,
           inputType: 'rel',
           collection: $scope.subbrands,
+          hidden: true
+        },
+        {
+          label: 'Brand for iOS Display',
+          key: 'brand',
+          value: -1,
+          defaultValue: -1,
+          inputType: 'rel',
+          collection: $scope.brands,
           hidden: true
         },
         {
@@ -352,6 +371,7 @@ angular.module('adminApp')
     $scope.createRow = function(model) {
       var brandLabel = '', brandId = null, brandModel = null;
       var subBrandLabel = '', subBrandId = null, subBrandModel = null;
+      var webBrandLabel = '', webBrandId = null, webBrandModel = null;
       var productTypeLabel = '', productTypeId = null, productTypeModel = null;
 
       if (model.get('brand')) {
@@ -386,6 +406,22 @@ angular.module('adminApp')
         subBrandId    = -1;
       }
 
+      if (model.get('webBrand')) {
+        webBrandModel = $scope.findModelById(model.get('webBrand').id, $scope.brands);
+        if (webBrandModel) {
+          webBrandLabel = webBrandModel.get('name');
+          webBrandId    = webBrandModel.id;
+        }
+        else {
+          webBrandLabel = 'None';
+          webBrandId    = -1;
+        }
+      }
+      else {
+        webBrandLabel = 'None';
+        webBrandId    = -1;
+      }
+
       if (model.get('productType')) {
         productTypeModel = $scope.findModelById(model.get('productType').id, $scope.productTypes);
         if (productTypeModel) {
@@ -407,6 +443,8 @@ angular.module('adminApp')
         brand: brandLabel,
         subBrandId: subBrandId,
         subBrand: subBrandLabel,
+        webBrandId: webBrandId,
+        webBrand: webBrandLabel,
 
         displayVisible: model.get('visible'),
         displayInStock: model.get('inStock'),

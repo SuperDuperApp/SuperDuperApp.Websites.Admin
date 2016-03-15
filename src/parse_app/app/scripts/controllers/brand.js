@@ -42,6 +42,7 @@ angular.module('adminApp')
       return {
         id:           model.id,
         model:        model,
+        webName:      model.get('webName'),
         name:         model.get('name'),
         visible:      model.get('visible'),
         photoCount:   model.get('photoCount'),
@@ -62,12 +63,21 @@ angular.module('adminApp')
           key: 'name',
           value: '',
           inputType: 'text',
+          hiddenPopup: true,
           hidden: false
+        },
+        {
+          label: 'Name',
+          key: 'webName',
+          value: '',
+          inputType: 'text',
+          hidden: true
         },
         {
           label: 'Parent',
           key: 'parent',
           value: -1,
+          defaultValue: -1,
           inputType: 'rel',
           collection: $scope.brands,
           hidden: true
@@ -75,9 +85,16 @@ angular.module('adminApp')
         {
           label: 'Visible',
           key: 'visible',
-          value: true,
+          value: false,
           inputType: 'checkbox',
           hidden: false
+        },
+        {
+          label: 'Name (for iOS app display)',
+          key: 'name',
+          value: '',
+          inputType: 'text',
+          hidden: true
         },
         {
           label: 'P',
