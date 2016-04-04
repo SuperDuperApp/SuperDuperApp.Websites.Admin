@@ -50,7 +50,7 @@ angular.module('adminApp')
       if (item === null) {
         var Product = Parse.Object.extend('Product');
         var query = new Parse.Query(Product);
-
+        query.limit(1000);
         query.get(itemId, {
           success: function(result) {
             if (cb) {

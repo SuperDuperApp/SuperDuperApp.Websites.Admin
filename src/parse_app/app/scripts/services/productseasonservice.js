@@ -17,7 +17,7 @@ angular.module('adminApp')
       var service = this;
       var ProductSeason = Parse.Object.extend('ProductSeason');
       var query = new Parse.Query(ProductSeason);
-
+      query.limit(1000);
       query.find({
         success: function(results) {
           console.log('ProductSeasonService::List::Success - ' + results.length);

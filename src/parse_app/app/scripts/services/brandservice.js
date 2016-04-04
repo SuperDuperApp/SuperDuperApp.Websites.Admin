@@ -17,6 +17,7 @@ angular.module('adminApp')
       var Brand = Parse.Object.extend('Brand');
       var query = new Parse.Query(Brand);
       query.ascending('name');
+      query.limit(1000);
       query.find({
         success: function(results) {
           console.log('BrandService::List::Success - ' + results.length);
